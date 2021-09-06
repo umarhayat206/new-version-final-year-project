@@ -5,11 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class CandidateParty extends Model
+class NationalArea extends Model
 {
     use HasFactory;
-   public function candidate()
-   {
-       return $this->belongsTo(User::class);
-   }
 }

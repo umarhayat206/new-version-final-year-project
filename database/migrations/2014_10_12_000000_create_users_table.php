@@ -23,7 +23,7 @@ class CreateUsersTable extends Migration
             $table->string('image')->nullable();
             $table->string('contact')->nullable();
             $table->string('address')->nullable();
-            $table->longText('moto')->nullable();
+            // $table->longText('moto')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

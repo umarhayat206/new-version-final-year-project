@@ -6,17 +6,19 @@ use App\Models\Party;
 use Illuminate\Http\Request;
 use function Ramsey\Uuid\v1;
 use RealRashid\SweetAlert\Facades\Alert;
+use Illuminate\Support\Carbon;
+use File;
 
 class PartiesController extends Controller
 {
     //
     public function index()
     {
-        Alert::success('Party Registerd successfully', 'You are successfull');
+        
         $parties=Party::orderBy('id','asc')->get();
-        $data= ['parties'=>$parties];
-        // Alert::success('İşlem Başarılı!', 'Slider resmi ekleme işleminiz başarılı.');
+         $data= ['parties'=>$parties];
         return view('admin.Parties.index',$data);
+        
     }
     public function create()
     {
@@ -33,5 +35,38 @@ class PartiesController extends Controller
         }
         $party->save();
         return redirect()->route('parties.index');
+    }
+    public function edit($id)
+    {
+        $party=Party::findOrFail($id);
+        $data=['party'=>$party];
+        return view('admin.parties.EditParty',$data);
+
+    }
+    public function update(Request $request,$id)
+    {
+        $party=Party::findOrFail($id);
+        $party->name=$request->name;
+        if ($imagefile = $request->file('image')) {
+            if (File::exists(public_path('images/partiesImages/'.$party->image))) 
+            {
+                File::delete(public_path('images/partiesImages/'.$party->image));
+            }
+            $name = time() . $imagefile->getClientOriginalName();
+            $imagefile->move('images/partiesImages', $name);
+            $party->image = $name;
+        }
+       
+        $party->moto=$request->moto;
+        $party->update();
+        return redirect()->route('parties.index');
+
+    }
+    public function delete($id)
+    {
+       $party=Party::findOrFail($id);
+        $party->delete();    
+        return response()->json(['status'=>'Party deleted Successfully']);
+       
     }
 }

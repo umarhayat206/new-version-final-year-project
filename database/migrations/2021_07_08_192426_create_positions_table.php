@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateCandidatePartiesTable extends Migration
+class CreatePositionsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,15 +13,11 @@ class CreateCandidatePartiesTable extends Migration
      */
     public function up()
     {
-        Schema::create('candidate_parties', function (Blueprint $table) {
+        Schema::create('positions', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('user_id');
-            $table->integer('party_id');
-            $table->string('party_name');
+            $table->string('title');
+            $table->longText('notes')->nullable();
             $table->timestamps();
-            $table->foreign('user_id')
-            ->references('id')->on('users')
-            ->onDelete('cascade');
         });
     }
 
@@ -32,6 +28,6 @@ class CreateCandidatePartiesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('candidate_parties');
+        Schema::dropIfExists('positions');
     }
 }

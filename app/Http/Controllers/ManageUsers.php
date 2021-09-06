@@ -2,96 +2,105 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\UpdateUserRequest;
+use App\Http\Requests\UserRequest;
 use App\Models\Role;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 //use Illuminate\Support\Facades\Hash;
 use Hash;
+use File;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class ManageUsers extends Controller
 {
     //
     public function index()
     {
-
-        //return $clients;
-        // $users = User::paginate(5);
         $users = User::whereHas('roles', function ($role) {
             $role->where('name', '=', 'admin')->orWhere('name','=','super-admin');
         })->get();
-
-        // $users = User::all();
         $data= ['users'=>$users];
         return view('admin.Users.index', $data);
     }
     public function create()
     {
-        $roles = Role::all();
+        $roles = Role::whereIn('id',[1,2])->get();
         $data['roles'] = $roles;
         return view('admin.Users.CreateUser', $data);
     }
-    public function store(Request $request)
+    public function store(UserRequest $request)
     {
-        $user = new User();
-        $user->name = $request->name;
-        $user->email = $request->email;
+        $user=new User();
+        $user->name=$request->name;
+        $user->email=$request->email;
+        if ($imagefile = $request->file('image')) {
+           
+            $name = time() . $imagefile->getClientOriginalName();
+            $imagefile->move('images/userImages', $name);
+            $user->image = $name;
+        }
         $user->password = Hash::make($request->password);
         $user->save();
-        $roles = $request->role;
-        for ($i = 0; $i < count($roles); $i++) {
-            $role = Role::find($roles[$i]);
-            $user->attachRole($role);
-            //echo $role->id."<br>";
-        }
+        $role = $request->role;
+        $user->attachRole($role);
         return redirect()->route('users.index')->with('success', 'User is saved successfully');
-        //        before code
-        //        $role = Role::where('id', $request->role)->first();
-        //        $user = new User();
-        //        $user->name = $request->name;
-        //        $user->email = $request->email;
-        //        $user->password = Hash::make($request->password);
-        //$user->fill($request->all());
-        //        $user->save();
-        //        $user->attachRole($role);
-        //
+       
     }
     public function edit($id)
     {
-        $roles = Role::all();
+        $roles = Role::whereIn('id',[1,2])->get();
         $user = User::findOrFail($id);
         $rolesIds = $user->roles->pluck('id')->toArray();
         $data = ['user' => $user, 'roles' => $roles, 'rolesIds'=>$rolesIds];
         return view('admin.Users.EditUser', $data);
     }
-    public function update(Request $request, $id)
+    public function update(UpdateUserRequest $request,$id)
     {
         $password = $request->input('password', null);
         $request->request->remove('password');
         $user = User::findOrFail($id);
+        $user->name=$request->name;
+        $user->email=$request->email;
+        if ($imagefile = $request->file('image')) {
+           
+            $name = time() . $imagefile->getClientOriginalName();
+            $imagefile->move('images/userImages', $name);
+            $user->image = $name;
+        }
         $user->detachRoles($user->roles);
         $roles = $request->role;
-        for ($i = 0; $i < count($roles); $i++) {
-            $role = Role::find($roles[$i]);
-            $user->attachRole($role);
-        }
-        $user->fill($request->all());
+        $user->attachRole($roles);
+        // for ($i = 0; $i < count($roles); $i++) {
+        //     $role = Role::find($roles[$i]);
+        //     $user->attachRole($role);
+        // }
         if(!empty($password))
         {
             $user->password = Hash::make($password);
         }
         $user->save();
-        return redirect()->route('users.index')->with('success', 'User is saved successfully');
+        Alert::success('Success','User Updated Successfully!'); 
+        return redirect()->route('users.index');
     }
     public function delete($id)
     {
-        // $currentUser = Auth::user();
+        
         $user = User::findOrFail($id);
-        // if ($currentUser->id != $user->id) {
+        if(Auth()->user()->id==$user->id)
+        {
+            return response()->json(['status'=>1]);
+        }
+        else{
+            if (File::exists(public_path('images/userImages/'.$user->image))) 
+            {
+                File::delete(public_path('images/userImages/'.$user->image));
+            }
             $user->delete();
-            return redirect()->route('users.index')->with('success', 'User is deleted successfully');
-        // }
-        // return back()->with('error','You cannot delete yourself');
+        return response()->json(['status'=>2]);
+        }
+      
     }
     public function show($id)
     {

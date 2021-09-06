@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateAreaUserTable extends Migration
+class CreateCandidatesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,17 +13,23 @@ class CreateAreaUserTable extends Migration
      */
     public function up()
     {
-        Schema::create('area_user', function (Blueprint $table) {
+        Schema::create('candidates', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id');
-           $table->unsignedBigInteger('area_id');
+            $table->unsignedBigInteger('voter_id');
+            $table->unsignedBigInteger('party_id')->nullable();
+            $table->integer('is_open');
+            $table->longText('moto');
+            $table->timestamps();
             $table->foreign('user_id')
             ->references('id')->on('users')
             ->onDelete('cascade');
-            $table->foreign('area_id')
-            ->references('id')->on('areas')
+            $table->foreign('voter_id')
+            ->references('id')->on('voters')
             ->onDelete('cascade');
-            $table->timestamps();
+            $table->foreign('party_id')
+            ->references('id')->on('parties')
+            ->onDelete('cascade');
         });
     }
 
@@ -34,6 +40,6 @@ class CreateAreaUserTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('area_user');
+        Schema::dropIfExists('candidates');
     }
 }

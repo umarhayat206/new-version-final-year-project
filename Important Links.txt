@@ -1,0 +1,3 @@
+https://stackoverflow.com/questions/21335832/laravel-wherehas-on-multiple-relationships/21356760
+
+https://stackoverflow.com/questions/26194771/laravel-multiple-wherehas-criteria-for-relationship/46505076

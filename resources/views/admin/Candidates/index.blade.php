@@ -1,31 +1,30 @@
 @extends('layouts.MasterAdmin')
 @section('css')
 
-<link rel="stylesheet" href="{{asset('DataTables/css/jquery.dataTables.min.css')}}">
-<link rel="stylesheet" href="{{asset('plugins/select2/css/select2.min.css')}}">
-<link rel="stylesheet" href="{{asset('plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css')}}">
-
+{{-- <link rel="stylesheet" href="{{asset('DataTables/css/jquery.dataTables.min.css')}}"> --}}
+<link rel="stylesheet" href="{{asset('plugins/datatables-bs4/css/dataTables.bootstrap4.min.css')}}">
+<link rel="stylesheet" href="{{asset('plugins/datatables-responsive/css/responsive.bootstrap4.min.css')}}">
 @endsection
 @section('content')
+<nav aria-label="breadcrumb" class="main-breadcrumb" style="margin-top:-35px;">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="{{route('dashboard')}}">Dashboard</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Candidates</li>
+  </ol>
+</nav>
 <div class="card">
     <div class="card-header">
       <h3 class="card-title">Candidates</h3>
-
-      <div class="card-tools">
-        <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip" title="Collapse">
-          <i class="fas fa-minus"></i></button>
-        <button type="button" class="btn btn-tool" data-card-widget="remove" data-toggle="tooltip" title="Remove">
-          <i class="fas fa-times"></i></button>
-      </div>
+      <a href="{{route('candidates.create')}}" class="btn btn-dark float-right">Register Candidate</a>
     </div>
     <div class="card-body">
-      <table class="table table-striped projects" id="candidateTable">
+      <table class="table table-borderd projects" id="candidateTable">
           <thead>
               <tr>
                   <th style="width: 20%">
                     Name
                   </th>
-                  <th style="width: 30%">
+                  <th>
                     CNIC
                   </th>
                   <th>
@@ -35,6 +34,13 @@
                     Candidate Party
                   </th>
                   <th>
+                    Cnadidate Position
+                  </th>
+                  <th>PRovince Areas</th>
+                  <th>
+                    Created At
+                  </th>
+                  <th>
                       Actions
                   </th>
               </tr>
@@ -42,17 +48,40 @@
           <tbody>
               @foreach ($candidates as $candidate)
               <tr>
-                  <td>{{$candidate->name}}</td>
+                <input type="hidden"class="delete_val_id" value="{{$candidate->id}}">
+                  <td>{{$candidate->user->name}}</td>
                   <td>
-                    {{$candidate->cnic}}
+                    {{$candidate->user->cnic}}
                   </td>
-                  <td class="project_progress">
+                  <td>
                    
-                  <img alt="Avatar" class="" src="{{url('images/candidateImages/',$candidate->image)}}" height="100px">
+                  <img alt="Avatar" class="" src="{{url('images/userImages',$candidate->user->image)}}" height="100px">
                         
                   </td>
+                  <td>
+                    {{$candidate->party->name}}
+                  </td>
+                  <td>
+                    <ul>
+                      @foreach($candidate->positions as $position)
+                     <li>{{$position->title}}</li>
+                    @endforeach
+                    </ul>
+                  </td>
+                  <td>
+                    <ul>
+                      @if($candidate->nationals)
+                      @foreach($candidate->nationals as $national)
+                      <li>{{$national->name}}</li>
+                     @endforeach
+                     @endif
+                      @foreach($candidate->provinces as $province)
+                     <li>{{$province->name}}</li>
+                    @endforeach
+                    </ul>
+                  </td>
                   <td class="project-state">
-                    {{$candidate->candidateParty->party_name}}
+                    {{$candidate->created_at}}
                   </td>
                   <td class="project-actions text-right">
                       <a class="btn btn-primary btn-sm" href="{{route('candidates.show',$candidate->id)}}">
@@ -65,11 +94,8 @@
                           </i>
                           Edit
                       </a>
-                      <a class="btn btn-danger btn-sm" href="#">
-                          <i class="fas fa-trash">
-                          </i>
-                          Delete
-                      </a>
+                      <button class="btn btn-danger btn-sm del"><i class="fas fa-trash">
+                      </i>Delete</button>
                   </td>
               </tr>
               @endforeach
@@ -82,12 +108,49 @@
     
 @endsection
 @push('js')
-    <script src="{{asset('DataTables/js/jquery.dataTables.min.js')}}"></script>
+    {{-- <script src="{{asset('DataTables/js/jquery.dataTables.min.js')}}"></script> --}}
+<script src="{{asset('plugins/datatables/jquery.dataTables.min.js')}}"></script>
+<script src="{{asset('plugins/datatables-bs4/js/dataTables.bootstrap4.min.js')}}"></script>
+<script src="{{asset('plugins/datatables-responsive/js/dataTables.responsive.min.js')}}"></script>
+<script src="{{asset('plugins/datatables-responsive/js/responsive.bootstrap4.min.js')}}"></script>
     <script>
  $(document).ready( function () {
-    
+
    $('#candidateTable').DataTable();
 
+  // function for confirmation and deletion
+   $('.del').click(function(e){
+      e.preventDefault();
+      var delete_id=$(this).closest("tr").find('.delete_val_id').val();
+      // alert(delete_id);
+      swal({
+        title: "Are you sure?",
+        text: "Once deleted, you will not be able to recover this imaginary file!",
+        icon: "warning",
+        buttons: true,
+        dangerMode: true,
+          }).then((willDelete) => {
+                  if (willDelete) {
+                         $.ajax({
+                          type:"DELETE",
+                          url:'/candidate/'+delete_id, 
+                          data:{
+                                "_token": "{{ csrf_token() }}",
+                            },
+                          success:function (response) {
+                               swal(response.status, {
+                                icon: "success",
+                                }).then((result)=>{
+                                  location.reload();
+                                }); 
+                            }
+
+                         });
+                 
+                }
+                
+              });
+   });
  });
 
 </script>

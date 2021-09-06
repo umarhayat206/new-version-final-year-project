@@ -58,4 +58,19 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(Area::class);
     }
+    // Voter areas
+    public function voterareas()
+    {
+        return $this->hasOne(VoterArea::class);   
+    }
+
+    public function voters()
+    {
+        return $this->hasOne(Voter::class);
+    }
+    public function candidates()
+    {
+        return $this->hasOne(Candidate::class);
+    }
+    
 }
