@@ -13,6 +13,7 @@ use App\Http\Controllers\VotersController;
 use App\Http\Controllers\NationalAreaController;
 use App\Http\Controllers\NotificationsController;
 use App\Http\Controllers\ProvinceAreaController;
+use App\Http\Controllers\ResultsController;
 use App\Http\Controllers\UpdatePasswordController;
 use App\Models\Party;
 use App\Models\Role;
@@ -90,8 +91,9 @@ Route::DELETE('/party/{id}',[PartiesController::class,'delete'])->name('party.de
 Route::GET('/candidates',[CandidatesController::class,'index'])->name('candidates.index');
 Route::GET('/candidate',[CandidatesController::class,'create'])->name('candidates.create');
 Route::POST('/candidate',[CandidatesController::class,'store'])->name('candidates.store');
-Route::GET('/candidate/view/{id}',[CandidatesController::class,'show'])->name('candidates.show');
+Route::GET('/candidate/{id}/view',[CandidatesController::class,'show'])->name('candidates.show');
 Route::GET('/candidate/{id}',[CandidatesController::class,'edit'])->name('candidates.edit');
+Route::PUT('/candidate/{id}',[CandidatesController::class,'update'])->name('candidates.update');
 Route::DELETE('/candidate/{id}',[CandidatesController::class,'delete'])->name('candidates.delete');
 
 //Voter Routes
@@ -130,13 +132,13 @@ Route::DELETE('/provincearea/{id}',[ProvinceAreaController::class,'delete'])->na
 
 //Notifications Routes
 
-Route::GET('/notifications',[NotificationsController ::class,'index'])->name('notifications.index');
-Route::GET('/notification',[NotificationsController ::class,'create'])->name('notifications.create');
-Route::POST('/notification',[NotificationsController ::class,'store'])->name('notifications.store');
-Route::GET('/notification/{id}',[NotificationsController ::class,'edit'])->name('notifications.edit');
-Route::PUT('/notification/{id}',[NotificationsController ::class,'update'])->name('notifications.update');
-Route::DELETE('/notification/{id}',[NotificationsController ::class,'delete'])->name('notifications.delete');
-Route::GET('/notification/{id}/show',[NotificationsController ::class,'show'])->name('notifications.show');
+Route::GET('notifications',[NotificationsController ::class,'index'])->name('notifications.index');
+Route::GET('notification',[NotificationsController ::class,'create'])->name('notifications.create');
+Route::POST('notification',[NotificationsController ::class,'store'])->name('notifications.store');
+Route::GET('notification/{id}',[NotificationsController ::class,'edit'])->name('notifications.edit');
+Route::PUT('notification/{id}',[NotificationsController ::class,'update'])->name('notifications.update');
+Route::DELETE('notification-delete/{id}',[NotificationsController ::class,'delete'])->name('notifications.delete');
+Route::GET('notification/{id}/show',[NotificationsController ::class,'show'])->name('notifications.show');
 
     
 });
@@ -154,12 +156,19 @@ Route::POST('update/password',[UpdatePasswordController::class,'update'])->name(
 
 Route::group(['middleware'=>['auth','role:voter|candidate']],function () {
     Route::GET('/profile',function(){
-
+        
         return view('Profile');
     })->name('profile');
 });
 
+Route::GET('results',[ResultsController::class,'index'])->name('results.index');
+Route::GET('national/result/{id}',[ResultsController::class,'nationalView'])->name('nationalResult.view');
+Route::GET('province/result/{id}',[ResultsController::class,'provinceView'])->name('provinceResult.view');
 
+// Route::GET('/result/{id}',[CastVoteController::class,'result']);
 
+Route::GET('public/notifications',[NotificationsController::class,'publicNotification'])->name('public.notifications');
+Route::GET('public/notification-view/{id}',[NotificationsController::class,'publicViewNotification'])->name('public.view.notification');
 
-
+Route::Post('chart/fetch_data',[DashboardController::class,'chartData']);
+Route::Post('chart/fetch_data/province',[DashboardController::class,'chartDataProvince']);

@@ -81,8 +81,10 @@ class ManageUsers extends Controller
             $user->password = Hash::make($password);
         }
         $user->save();
-        Alert::success('Success','User Updated Successfully!'); 
-        return redirect()->route('users.index');
+        // Alert::success('Success','User Updated Successfully!'); 
+        return redirect()->route('users.index')->with('success', 'User Updated Successfully');
+
+       
     }
     public function delete($id)
     {

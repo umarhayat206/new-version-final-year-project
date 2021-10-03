@@ -13,7 +13,7 @@
     <div class="card-header">
       <h2 class="card-title font-weight-bold">
         <i class="fas fa-edit"></i>
-        Create Notification
+        Edit Notification
       </h2>
     </div>
 <div class="card-body">   
@@ -29,6 +29,10 @@
             <strong>{{$errors->first('title')}}</strong>
             </div>
         @endif  
+       </div>
+       <div class="form-group">
+        <label>Notification Image</label>
+        <input type="file"  class="form-control" name="image" >
        </div>
        <div class="form-group">
         <label>Description</label>

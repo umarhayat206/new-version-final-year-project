@@ -10,16 +10,16 @@
             background: #fff;
         }
 
-        .profile-img {
+        /* .profile-img {
             text-align: center;
         }
 
         .profile-img img {
             width: 70%;
             height: 100%;
-        }
+        } */
 
-        .profile-img .file {
+        /* .profile-img .file {
             position: relative;
             overflow: hidden;
             margin-top: -20%;
@@ -28,14 +28,14 @@
             border-radius: 0;
             font-size: 15px;
             background: #212529b8;
-        }
+        } */
 
-        .profile-img .file input {
+        /* .profile-img .file input {
             position: absolute;
             opacity: 0;
             right: 0;
             top: 0;
-        }
+        } */
 
         .profile-head h5 {
             color: #333;
@@ -118,24 +118,19 @@
 
         <div class="row">
             <div class="col-md-4">
-                <div class="profile-img">
-                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS52y5aInsxSm31CvHOFHWujqUx_wWTS9iM6s7BAm21oEN_RiGoog"
-                        alt="" />
-                    <div class="file btn btn-lg btn-primary">
-                        Change Photo
-                        <input type="file" name="file" />
-                    </div>
+                <div style="text-align: center;">
+                    <img src="{{url('images/userImages',Auth()->user()->image)}}" 
+                        alt="" height="200px" width="70%"/>
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="profile-head">
                     <h5>
-                        Kshiti Ghelani
+                        {{Auth()->user()->name}}
                     </h5>
                     <h6>
                         Web Developer and Designer
-                    </h6>
-                    <p class="proile-rating">RANKINGS : <span>8/10</span></p>
+                    </h6><br>
                     <ul class="nav nav-tabs" id="myTab" role="tablist">
                         <li class="nav-item">
                             <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab"
@@ -148,23 +143,11 @@
                     </ul>
                 </div>
             </div>
-            <div class="col-md-2">
-                <input type="submit" class="profile-edit-btn" name="btnAddMore" value="Edit Profile" />
-            </div>
+          
         </div>
-        <div class="row">
+        <div class="row" style="transform: translateY(-70px)">
             <div class="col-md-4">
                 <div class="profile-work">
-                    <p>WORK LINK</p>
-                    <a href="">Website Link</a><br />
-                    <a href="">Bootsnipp Profile</a><br />
-                    <a href="">Bootply Profile</a>
-                    <p>SKILLS</p>
-                    <a href="">Web Designer</a><br />
-                    <a href="">Web Developer</a><br />
-                    <a href="">WordPress</a><br />
-                    <a href="">WooCommerce</a><br />
-                    <a href="">PHP, .Net</a><br />
                 </div>
             </div>
             <div class="col-md-8">
@@ -183,7 +166,7 @@
                                 <label>Name</label>
                             </div>
                             <div class="col-md-6">
-                                <p>Kshiti Ghelani</p>
+                                <p>{{Auth()->user()->name}}</p>
                             </div>
                         </div>
                         <div class="row">
@@ -191,7 +174,7 @@
                                 <label>Email</label>
                             </div>
                             <div class="col-md-6">
-                                <p>kshitighelani@gmail.com</p>
+                                <p>{{Auth()->user()->email}}</p>
                             </div>
                         </div>
                         <div class="row">
@@ -199,15 +182,35 @@
                                 <label>Phone</label>
                             </div>
                             <div class="col-md-6">
-                                <p>123 456 7890</p>
+                                <p>{{Auth()->user()->contact}}</p>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-md-6">
-                                <label>Profession</label>
+                                <label>Address</label>
                             </div>
                             <div class="col-md-6">
-                                <p>Web Developer and Designer</p>
+                                <p>{{Auth()->user()->address}}</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label>National Area</label>
+                            </div>
+                            <div class="col-md-6">
+                                @php
+                                    $nationalArea=App\Models\NationalArea::where('id',Auth()->user()->voters->national_area_id)->first();
+                                    $provinceArea=App\Models\ProvinceArea::where('id',Auth()->user()->voters->province_area_id)->first();
+                                @endphp
+                                <p>{{$nationalArea->name}}</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label>Province Area</label>
+                            </div>
+                            <div class="col-md-6">
+                                <p>{{$provinceArea->name}}</p>
                             </div>
                         </div>
                     </div>
@@ -243,7 +246,7 @@
             </div>
         </div>
 
-    </div>
+    </div><br><br>
 @endsection
 @push('js')
 

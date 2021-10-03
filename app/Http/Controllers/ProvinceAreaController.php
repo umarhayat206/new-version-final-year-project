@@ -26,8 +26,10 @@ class ProvinceAreaController extends Controller
         $newArea->name=$request->name;
         $newArea->notes=$request->notes;
         $newArea->save();
-        Alert::success('Success','Area  Created Successfully!'); 
-        return redirect()->route('provinceareas.index');
+        return redirect()->route('provinceareas.index')->with('success', 'Area Created Successfully');
+
+        // Alert::success('Success','Area  Created Successfully!'); 
+        // return redirect()->route('provinceareas.index');
     }
     public function edit($id)
     {
@@ -41,8 +43,10 @@ class ProvinceAreaController extends Controller
         $area->name=$request->name;
         $area->notes=$request->notes;
         $area->update();
-        Alert::success('Success','Area  updated Successfully!'); 
-        return redirect()->back();
+        return redirect()->route('provinceareas.index')->with('success', 'Area updated Successfully');
+
+        // Alert::success('Success','Area  updated Successfully!'); 
+        // return redirect()->back();
        
     }
     public function delete($id)

@@ -14,8 +14,10 @@ class CreateCandidateProvinceAreaTable extends Migration
     public function up()
     {
         Schema::create('candidate_province_area', function (Blueprint $table) {
+            $table->id();
             $table->unsignedBigInteger('candidate_id');
             $table->unsignedBigInteger('province_area_id');
+            $table->integer('vote_count')->default(0)->nullable();
             $table->timestamps();
             $table->foreign('candidate_id')
             ->references('id')->on('candidates')
@@ -23,6 +25,7 @@ class CreateCandidateProvinceAreaTable extends Migration
             $table->foreign('province_area_id')
             ->references('id')->on('province_areas')
             ->onDelete('cascade');
+           
         });
     }
 

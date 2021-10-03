@@ -303,6 +303,7 @@
               </li>
             </ul>
           </li>
+          @if(Auth()->user()->hasRole('super-admin'))
           <li class="nav-header">SYSTEM USERS</li>
           <li class="nav-item has-treeview">
             <a href="#" class="nav-link">
@@ -328,6 +329,7 @@
               </li>
             </ul>
           </li>
+          @endif
         </ul>
       </nav>
      

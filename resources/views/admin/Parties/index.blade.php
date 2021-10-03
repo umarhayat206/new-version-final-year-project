@@ -15,6 +15,14 @@
     <li class="breadcrumb-item active" aria-current="page">All Parties</li>
   </ol>
 </nav>
+@if(session('success'))
+<div class="alert alert-success alert-dismissible fade show" role="alert">
+  <strong>Success!</strong> {{session('success')}}
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+@endif
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-12">
@@ -24,7 +32,7 @@
                         <a href="{{route('parties.create')}}" class="btn btn-dark float-right">Register New Party</a>
                     </div>
                     <div class="card-body">
-                        <table class="table table-bordered table-hover table-striped" id="partiesTable">
+                        <table class="table" id="partiesTable">
                             <thead>
                             <tr>
                                 <th>Party Name</th>

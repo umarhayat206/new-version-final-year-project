@@ -23,16 +23,21 @@
         <div class="form-group">
         <label>Notification Title</label>
         
-        <input type="text"  class="form-control {{$errors->has('title')?'is-invalid':''}}" placeholder="Enter Position Title" name="title" value="{{old('title')}}">
-        @if($errors->has('title'))
-            <div class="invalid-feedback">
-            <strong>{{$errors->first('title')}}</strong>
-            </div>
-        @endif  
+        <input type="text"  class="form-control" placeholder="Enter Position Title" name="title" value="{{old('title')}}">
+        @error('title')
+        <p style=" color: #dc3545;font-weight:bold;font-size: 80%;">The Description field is required</p>
+        @enderror
+       </div>
+       <div class="form-group">
+        <label>Notification Image</label>
+        <input type="file"  class="form-control" name="image" >
+        @error('image')
+        <p style=" color: #dc3545;font-weight:bold;font-size: 80%;">The Description field is required</p>
+        @enderror
        </div>
        <div class="form-group">
         <label>Description</label>
-        <textarea name="description"class="form-control {{$errors->has('description')?'is-invalid':''}}" rows="6">
+        <textarea name="description"class="form-control" rows="6">
         {{old('description')}}
         </textarea>
         @error('description')
@@ -40,7 +45,7 @@
         @enderror
        </div>
      
-    <button type="submit" class="btn btn-secondary"  style="width: 100%">Save Position</button>
+    <button type="submit" class="btn btn-secondary"  style="width: 100%">Create Notification</button>
   </form>
 </div>
 </div>

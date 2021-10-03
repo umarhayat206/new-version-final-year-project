@@ -34,7 +34,8 @@ class PartiesController extends Controller
             $party->image = $name;
         }
         $party->save();
-        return redirect()->route('parties.index');
+        return redirect()->route('parties.index')->with('success', 'Party Created Successfully');
+
     }
     public function edit($id)
     {
@@ -59,7 +60,9 @@ class PartiesController extends Controller
        
         $party->moto=$request->moto;
         $party->update();
-        return redirect()->route('parties.index');
+        // return redirect()->route('parties.index');
+        return redirect()->route('parties.index')->with('success', 'Party Updated Successfully');
+
 
     }
     public function delete($id)

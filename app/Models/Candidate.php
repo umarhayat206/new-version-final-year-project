@@ -19,16 +19,26 @@ class Candidate extends Model
     }
     public function provinces()
     {
-        return $this->belongsToMany(ProvinceArea::class, 'candidate_province_area');
+        return $this->belongsToMany(ProvinceArea::class, 'candidate_province_area')->withPivot('vote_count');
     }
     public function nationals()
     {
-        return $this->belongsToMany(NationalArea::class, 'candidate_national_area');
+        return $this->belongsToMany(NationalArea::class, 'candidate_national_area')->withPivot('vote_count');
     }
 
     public function party()
     {
         return $this->belongsTo(Party::class);
     }
+
+    public function nationalAreas()
+    {
+        return $this->hasMany(CandidateNationalArea::class);
+    }
+    public function provinceAreas()
+    {
+        return $this->hasMany(CandidateProvinceArea::class);
+    }
+    
    
 }

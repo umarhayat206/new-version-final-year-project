@@ -26,6 +26,7 @@ class NotificationRequest extends FormRequest
         return [
             //
             'title'=>'required',
+            'image'=>'required',
             'description'=>'required',
         ];
     }

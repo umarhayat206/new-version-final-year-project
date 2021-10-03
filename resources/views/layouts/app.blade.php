@@ -11,13 +11,14 @@
     <title>{{ config('app.name', 'Laravel') }}</title>
 
     <!-- Scripts -->
-    <script src="{{ asset('js/app.js') }}" defer></script>
+    <script src="{{ asset('js/app.js') }}" ></script>
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
-
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css"
         integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
@@ -293,6 +294,9 @@
 
 <body>
     @include('sweetalert::alert')
+    <script>
+        AOS.init();
+      </script>
     <div id="app">
         <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
             <div class="container">
@@ -315,11 +319,14 @@
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('contactus') }}">Contact Us</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('aboutus') }}">About Us</a>
+                        </li>
                         {{-- <li class="nav-item">
                             <a class="nav-link" href="{{ route('contactus') }}">About Us</a>
                         </li> --}}
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route('contactus') }}">Notifications</a>
+                            <a class="nav-link" href="{{ route('public.notifications') }}">Notifications</a>
                         </li>
 
                     </ul>
@@ -342,6 +349,12 @@
                             @endif --}}
                         @else
                             @if (Auth::user()->hasRole('voter'))
+                            <li class="nav-item">
+                                {{-- <a class="nav-link" href="{{ route('castvote') }}">Cast Vote</a> --}}
+                                <a class="nav-link" 
+                                    style="cursor: pointer;" href="{{route('results.index')}}">Results</a>
+
+                            </li>
                                 <li class="nav-item">
                                     {{-- <a class="nav-link" href="{{ route('castvote') }}">Cast Vote</a> --}}
                                     <a class="nav-link" onclick="castVote({{ Auth::user()->id }})"
@@ -479,6 +492,11 @@
         </div>
     </div>
     <script src="{{ asset('plugins/jquery/jquery.min.js') }}"></script>
+    <script src="{{asset('plugins/jquery/jquery.min.js')}}"></script>
+    <script src="{{asset('plugins/datatables/jquery.dataTables.min.js')}}"></script>
+    <script src="{{asset('plugins/datatables-bs4/js/dataTables.bootstrap4.min.js')}}"></script>
+    <script src="{{asset('plugins/datatables-responsive/js/dataTables.responsive.min.js')}}"></script>
+    <script src="{{asset('plugins/datatables-responsive/js/responsive.bootstrap4.min.js')}}"></script>
     @stack('js')
     <script>
         function castVote() {
@@ -504,6 +522,7 @@
             })
         }
     </script>
+    
 </body>
 
 </html>

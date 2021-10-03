@@ -76,7 +76,8 @@ class VoterController extends Controller
             'pa'=>'PA-'.$request->provinceArea,
           ];
           Mail::to($request->email)->send(new VoterMail($details));
-         return $random;
+        return redirect()->route('voters.index')->with('success', 'Voter Created Successfully');
+        //  return $random;
         //return redirect()->route('voters.index');
 
     }
@@ -122,22 +123,24 @@ class VoterController extends Controller
         $voter->province_area_id=$request->provinceArea;
         // $user->voterareas()->update($voter);
         $voter->update();
-        return redirect()->back();
+        return redirect()->route('voters.index')->with('success', 'Voter Updated Successfully');
+
+        // return redirect()->back();
         //  return $random;
     }
     public function delete($id)
     {
        $voter=Voter::findOrFail($id);
-       $userId=$voter->user_id;
+    //    $userId=$voter->user_id;
        $voter->delete();
 
-       $user=User::findOrFail($userId);
-       if (File::exists(public_path('images/userImages/'.$user->image))) 
-            {
-                File::delete(public_path('images/userImages/'.$user->image));
-            }
+    //    $user=User::findOrFail($userId);
+    //    if (File::exists(public_path('images/userImages/'.$user->image))) 
+    //         {
+    //             File::delete(public_path('images/userImages/'.$user->image));
+    //         }
 
-        $user->delete();    
+    //     $user->delete();    
         return response()->json(['status'=>'Voter deleted Successfully']);
 
 

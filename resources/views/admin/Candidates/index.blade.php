@@ -12,6 +12,15 @@
     <li class="breadcrumb-item active" aria-current="page">Candidates</li>
   </ol>
 </nav>
+
+@if(session('success'))
+<div class="alert alert-success alert-dismissible fade show" role="alert">
+  <strong>Success!</strong> {{session('success')}}
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+@endif
 <div class="card">
     <div class="card-header">
       <h3 class="card-title">Candidates</h3>
@@ -21,7 +30,7 @@
       <table class="table table-borderd projects" id="candidateTable">
           <thead>
               <tr>
-                  <th style="width: 20%">
+                  <th style="width:15%">
                     Name
                   </th>
                   <th>
@@ -33,14 +42,14 @@
                   <th>
                     Candidate Party
                   </th>
-                  <th>
+                  {{-- <th>
                     Cnadidate Position
-                  </th>
-                  <th>PRovince Areas</th>
-                  <th>
+                  </th> --}}
+                  <th>Candidate Areas</th>
+                  {{-- <th>
                     Created At
-                  </th>
-                  <th>
+                  </th> --}}
+                  <th style="width:25%">
                       Actions
                   </th>
               </tr>
@@ -61,13 +70,13 @@
                   <td>
                     {{$candidate->party->name}}
                   </td>
-                  <td>
+                  {{-- <td>
                     <ul>
                       @foreach($candidate->positions as $position)
                      <li>{{$position->title}}</li>
                     @endforeach
                     </ul>
-                  </td>
+                  </td> --}}
                   <td>
                     <ul>
                       @if($candidate->nationals)
@@ -80,9 +89,9 @@
                     @endforeach
                     </ul>
                   </td>
-                  <td class="project-state">
-                    {{$candidate->created_at}}
-                  </td>
+                  {{-- <td class="project-state">
+                    {{$candidate->created_at->format('M d, H:i')}}
+                  </td> --}}
                   <td class="project-actions text-right">
                       <a class="btn btn-primary btn-sm" href="{{route('candidates.show',$candidate->id)}}">
                           <i class="fas fa-folder">
@@ -94,8 +103,10 @@
                           </i>
                           Edit
                       </a>
+                      @if(Auth()->user()->hasRole('super-admin'))
                       <button class="btn btn-danger btn-sm del"><i class="fas fa-trash">
                       </i>Delete</button>
+                      @endif
                   </td>
               </tr>
               @endforeach
@@ -119,7 +130,8 @@
    $('#candidateTable').DataTable();
 
   // function for confirmation and deletion
-   $('.del').click(function(e){
+  $('#candidateTable').on('click', '.del', function(e){
+  
       e.preventDefault();
       var delete_id=$(this).closest("tr").find('.delete_val_id').val();
       // alert(delete_id);

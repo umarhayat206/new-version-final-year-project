@@ -26,8 +26,10 @@ class NationalAreaController extends Controller
         $newArea->name=$request->name;
         $newArea->notes=$request->notes;
         $newArea->save();
-        Alert::success('Success','Area  Created Successfully!'); 
-        return redirect()->route('nationalareas.index');
+        // Alert::success('Success','Area  Created Successfully!'); 
+        // return redirect()->route('nationalareas.index');
+        return redirect()->route('nationalareas.index')->with('success', 'Area Created Successfully');
+
     }
     public function edit($id)
     {
@@ -41,8 +43,10 @@ class NationalAreaController extends Controller
         $area->name=$request->name;
         $area->notes=$request->notes;
         $area->update();
-        Alert::success('Success','Area  updated Successfully!'); 
-        return redirect()->back();
+        return redirect()->route('nationalareas.index')->with('success', 'Area Updated Successfully');
+
+        // Alert::success('Success','Area  updated Successfully!'); 
+        // return redirect()->back();
        
     }
     public function delete($id)

@@ -12,13 +12,21 @@
     <li class="breadcrumb-item active" aria-current="page">Voters</li>
   </ol>
 </nav>
+@if(session('success'))
+<div class="alert alert-success alert-dismissible fade show" role="alert">
+  <strong>Success!</strong> {{session('success')}}
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+@endif
 <div class="card">
     <div class="card-header">
       <h3 class="card-title">Voters</h3>
       <a href="{{route('voters.create')}}" class="btn btn-dark float-right">Add New Voter</a>
     </div>
     <div class="card-body">
-      <table class="table table-bordered table-striped" id="voterTable">
+      <table class="table" id="voterTable">
           <thead>
               <tr>
                   <th style="width: 20%">
@@ -62,7 +70,7 @@
                     {{$voter->provinceArea->name}}
                   </td>
                   <td class="project-state">
-                    {{$voter->created_at}}
+                    {{$voter->created_at->format('M d, H:i')}}
                   </td>
                   <td class="project-actions text-right">
                       <a class="btn btn-primary btn-sm" href="{{route('voters.show',$voter->id)}}">
@@ -75,8 +83,10 @@
                           </i>
                           Edit
                       </a>
+                      @if(Auth()->user()->hasRole('super-admin'))
                       <button class="btn btn-danger btn-sm del"><i class="fas fa-trash">
                       </i>Delete</button>
+                      @endif
                   </td>
               </tr>
               @endforeach

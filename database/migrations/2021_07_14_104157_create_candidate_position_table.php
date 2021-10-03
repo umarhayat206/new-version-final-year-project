@@ -14,6 +14,7 @@ class CreateCandidatePositionTable extends Migration
     public function up()
     {
         Schema::create('candidate_position', function (Blueprint $table) {
+            
             $table->unsignedBigInteger('candidate_id');
             $table->unsignedBigInteger('position_id');
             $table->foreign('candidate_id')

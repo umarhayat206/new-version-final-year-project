@@ -28,8 +28,10 @@ class PositionController extends Controller
         $position->title=$request->title;
         $position->notes=$request->notes;
         $position->save();
-        Alert::success('Success','Position Created Successfully!'); 
-        return redirect()->route('positions.index');
+        return redirect()->route('positions.index')->with('success', 'Position Created Successfully');
+
+        // Alert::success('Success','Position Created Successfully!'); 
+        // return redirect()->route('positions.index');
     }
     public function edit($id)
     {
@@ -43,8 +45,10 @@ class PositionController extends Controller
         $position->title=$request->title;
         $position->notes=$request->notes;
         $position->update();
-        Alert::success('Success','Position Updated Successfully!'); 
-        return redirect()->route('positions.index');
+        return redirect()->route('positions.index')->with('success', 'Position Updated Successfully');
+
+        // Alert::success('Success','Position Updated Successfully!'); 
+        // return redirect()->route('positions.index');
     }
     public function delete($id)
     {

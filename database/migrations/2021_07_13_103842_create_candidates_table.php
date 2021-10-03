@@ -16,17 +16,17 @@ class CreateCandidatesTable extends Migration
         Schema::create('candidates', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id');
-            $table->unsignedBigInteger('voter_id');
+            // $table->unsignedBigInteger('voter_id');
             $table->unsignedBigInteger('party_id')->nullable();
-            $table->integer('is_open');
-            $table->longText('moto');
+            $table->integer('is_open')->nullable();
+            $table->longText('moto')->nullable();
             $table->timestamps();
             $table->foreign('user_id')
             ->references('id')->on('users')
             ->onDelete('cascade');
-            $table->foreign('voter_id')
-            ->references('id')->on('voters')
-            ->onDelete('cascade');
+            // $table->foreign('voter_id')
+            // ->references('id')->on('voters')
+            // ->onDelete('cascade');
             $table->foreign('party_id')
             ->references('id')->on('parties')
             ->onDelete('cascade');

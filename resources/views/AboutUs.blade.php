@@ -19,11 +19,11 @@
     <div class="row">
         <div class="col-xl-6 col-md-6 col-sm-6" data-aos="fade-right">
         <div>
-          <img src="login.jpg" width="98%" height="500px">
+          <img src="login.jpg" width="98%" height="600px">
         </div>
         </div>
         <div class="col-xl-6 col-md-6 col-sm-6" data-aos="fade-left">
-          <div>
+          <div id="contactus-input-div">
           <p id="about-us-p">
             Lorem ipsum dolor sit amet, consectetur adipiscing eliteiusmod tempor incididunt ut
              labore et dolore magna aliqua. Qpsum suspendisse ultrices gravida. Risus commodo viverra 

@@ -105,13 +105,13 @@
                                                     </li>
                                                     <li class="list-group-item">
                                                         <b>Party Logo</b>
-                                                        <img class="img-fluid img-circle"
-                                                            src="{{ url('images/partiesImages', $nationalcandidate->party->image) }}">
+                                                        <img class="img-circle"
+                                                            src="{{ url('images/partiesImages', $nationalcandidate->party->image) }}" height="80px" style="margin-left:35px;">
                                                     </li>
                                                 </ul>
                                                 <div class="justify-content-center">
                                                     <center><input type="radio" value="{{ $nationalcandidate->id }}"
-                                                            name="nationalcandidate"><span>Select</span></center>
+                                                            name="nationalcandidate"><span style="margin-left:5px">Select</span></center>
                                                 </div>
 
                                             </div>
@@ -152,8 +152,9 @@
                                                             class="float-right">{{ $provincecandidate->party->name }}</a>
                                                     </li>
                                                     <li class="list-group-item">
-                                                        <b>Party Logo</b> <a
-                                                            class="float-right">{{ $provincecandidate->id }}</a>
+                                                        <b>Party Logo</b> 
+                                                        <img class="img-circle"
+                                                        src="{{ url('images/partiesImages', $provincecandidate->party->image) }}" height="80px" style="margin-left:35px;">
                                                     </li>
                                                 </ul>
                                                 <div class="justify-content-center">

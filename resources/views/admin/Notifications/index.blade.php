@@ -12,6 +12,14 @@
     <li class="breadcrumb-item active" aria-current="page">Notifications</li>
   </ol>
 </nav>
+@if(session('success'))
+<div class="alert alert-success alert-dismissible fade show" role="alert">
+  <strong>Success!</strong> {{session('success')}}
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+@endif
 <div class="card">
     <div class="card-header">
       <h3 class="card-title font-weight-bold">Notifications</h3>
@@ -59,8 +67,10 @@
                           </i>
                           View
                       </a>
+                      @if(Auth()->user()->hasRole('super-admin'))
                         <button class="btn btn-danger btn-sm del"><i class="fas fa-trash">
                         </i>Delete</button>
+                      @endif
                     </td>
                 </tr>
               @endforeach
@@ -95,8 +105,8 @@
           }).then((willDelete) => {
                   if (willDelete) {
                          $.ajax({
-                          type:"DELETE",
-                          url:'/notification/'+delete_id, 
+                          type:"delete",
+                          url:'notification-delete/'+delete_id, 
                           data:{
                                 "_token": "{{ csrf_token() }}",
                             },
